@@ -1,0 +1,11 @@
+data/
+checkpoints/
+outputs/
+*.pth
+*.zip
+__pycache__/
+*.pyc
+.venv/
+kaggle.json
+mlruns/
+.DS_Store
