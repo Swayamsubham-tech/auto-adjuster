@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
-from frame_extraction import extract_frames
+from frame_extraction import extract_frames  # noqa: E402
 
 
 def _make_synthetic_video(path, n_frames=30, fps=10, size=(64, 64)):
@@ -39,5 +39,7 @@ def test_deduplication_reduces_near_identical_frames():
         video_path = os.path.join(tmp, "synthetic.mp4")
         out_dir = os.path.join(tmp, "frames")
         _make_synthetic_video(video_path, n_frames=30)
-        saved_strict = extract_frames(video_path, out_dir, target_fps=10, hash_threshold=5)
+        saved_strict = extract_frames(
+            video_path, out_dir, target_fps=10, hash_threshold=5
+        )
         assert len(saved_strict) < 30

@@ -2,6 +2,7 @@
 Day 3 — Dataset download utility.
 Downloads a public Kaggle vehicle-damage dataset.
 """
+
 import argparse
 import os
 import sys
@@ -44,7 +45,9 @@ def download_and_extract(dataset_slug: str, dest_dir: str) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--dataset", required=True, help="e.g. 'anujms/car-damage-detection'")
+    parser.add_argument(
+        "--dataset", required=True, help="e.g. 'anujms/car-damage-detection'"
+    )
     parser.add_argument("--dest", default="data/kaggle_car_damage")
     args = parser.parse_args()
 

@@ -1,6 +1,7 @@
 """
 Day 3 — Exploration for CarDD's FiftyOne-exported format.
 """
+
 import argparse
 import json
 import os
@@ -10,8 +11,12 @@ from PIL import Image
 import matplotlib.pyplot as plt
 
 LABEL_MAP = {
-    "dent": "dent", "scratch": "scratch", "crack": "crack",
-    "glass shatter": "shattered_glass", "lamp broken": "broken_lamp", "tire flat": "flat_tire",
+    "dent": "dent",
+    "scratch": "scratch",
+    "crack": "crack",
+    "glass shatter": "shattered_glass",
+    "lamp broken": "broken_lamp",
+    "tire flat": "flat_tire",
 }
 
 
@@ -49,12 +54,15 @@ def load_cardd_fiftyone(samples_json: str, data_root: str) -> list:
         for det in detections:
             label = LABEL_MAP.get(det["label"], det["label"])
             nx, ny, nw, nh = det["bounding_box"]
-            rows.append({
-                "image_path": img_path,
-                "damage_label": label,
-                "norm_bbox": (nx, ny, nw, nh),
-                "img_width": width, "img_height": height,
-            })
+            rows.append(
+                {
+                    "image_path": img_path,
+                    "damage_label": label,
+                    "norm_bbox": (nx, ny, nw, nh),
+                    "img_width": width,
+                    "img_height": height,
+                }
+            )
 
     if n_missing:
         print(f"WARNING: {n_missing} samples had unresolvable image paths — skipped.")
@@ -85,7 +93,9 @@ def save_sample_grid(rows: list, out_dir: str, per_class: int = 3) -> None:
         by_class[r["damage_label"]].append(r)
 
     n_classes = len(by_class)
-    fig, axes = plt.subplots(n_classes, per_class, figsize=(per_class * 3, n_classes * 3))
+    fig, axes = plt.subplots(
+        n_classes, per_class, figsize=(per_class * 3, n_classes * 3)
+    )
     if n_classes == 1:
         axes = [axes]
 

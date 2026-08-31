@@ -2,6 +2,7 @@
 Day 4 — Frame extraction utility. Samples frames from video at a target FPS
 and drops near-duplicate frames via perceptual hashing.
 """
+
 import argparse
 import os
 

@@ -4,12 +4,13 @@ Unlike a folder-per-class dataset, VIA stores everything in one JSON:
 each image has a list of "regions" (polygons), and each region has its own
 damage label in region_attributes.
 """
+
 import argparse
 import json
 import os
 from collections import defaultdict, Counter
 
-from PIL import Image, ImageDraw
+from PIL import Image
 import matplotlib.pyplot as plt
 
 
@@ -28,12 +29,14 @@ def load_via_annotations(json_path: str, img_dir: str) -> list:
             label = region.get("region_attributes", {}).get("damage", "unlabeled")
             points_x = region["shape_attributes"].get("all_points_x", [])
             points_y = region["shape_attributes"].get("all_points_y", [])
-            rows.append({
-                "image_path": img_path,
-                "damage_label": label,
-                "polygon_x": points_x,
-                "polygon_y": points_y,
-            })
+            rows.append(
+                {
+                    "image_path": img_path,
+                    "damage_label": label,
+                    "polygon_x": points_x,
+                    "polygon_y": points_y,
+                }
+            )
     return rows
 
 
@@ -61,7 +64,9 @@ def save_sample_grid(rows: list, out_dir: str, per_class: int = 3) -> None:
         by_class[r["damage_label"]].append(r)
 
     n_classes = len(by_class)
-    fig, axes = plt.subplots(n_classes, per_class, figsize=(per_class * 3, n_classes * 3))
+    fig, axes = plt.subplots(
+        n_classes, per_class, figsize=(per_class * 3, n_classes * 3)
+    )
     if n_classes == 1:
         axes = [axes]
 
@@ -99,7 +104,9 @@ def main() -> None:
 
     rows = load_via_annotations(args.json_path, args.img_dir)
     if not rows:
-        raise SystemExit("ERROR: no annotated regions found — check the JSON structure.")
+        raise SystemExit(
+            "ERROR: no annotated regions found — check the JSON structure."
+        )
 
     report_stats(rows)
     save_sample_grid(rows, args.out_dir)
