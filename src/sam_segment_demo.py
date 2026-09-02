@@ -1,6 +1,7 @@
 """
 Day 6 — SAM zero-shot segmentation demo.
 """
+
 import argparse
 import json
 import os
@@ -56,13 +57,15 @@ def visualize_masks(image, masks, out_path):
 def masks_to_json(masks):
     summary = []
     for i, m in enumerate(masks):
-        summary.append({
-            "mask_id": i,
-            "bbox_xywh": [int(v) for v in m["bbox"]],
-            "area_px": int(m["area"]),
-            "predicted_iou": float(m["predicted_iou"]),
-            "stability_score": float(m["stability_score"]),
-        })
+        summary.append(
+            {
+                "mask_id": i,
+                "bbox_xywh": [int(v) for v in m["bbox"]],
+                "area_px": int(m["area"]),
+                "predicted_iou": float(m["predicted_iou"]),
+                "stability_score": float(m["stability_score"]),
+            }
+        )
     return summary
 
 
@@ -70,7 +73,9 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--image", required=True)
     parser.add_argument("--checkpoint", required=True)
-    parser.add_argument("--model_type", default="vit_b", choices=["vit_b", "vit_l", "vit_h"])
+    parser.add_argument(
+        "--model_type", default="vit_b", choices=["vit_b", "vit_l", "vit_h"]
+    )
     parser.add_argument("--out_dir", default="outputs/day6")
     args = parser.parse_args()
 
