@@ -59,9 +59,10 @@ def run_pipeline(video_path, checkpoint, model_type, out_dir, fps, max_frames):
     with open(summary_path, "w") as f:
         json.dump(pipeline_summary, f, indent=2)
 
-    print(
-        f"\n=== Pipeline complete === Frames: {frames_dir} | Masks: {masks_dir} | Summary: {summary_path}"
-    )
+        print("\n=== Pipeline complete ===")
+    print(f"Frames:  {frames_dir}")
+    print(f"Masks:   {masks_dir}")
+    print(f"Summary: {summary_path}")
 
 
 def main() -> None:
