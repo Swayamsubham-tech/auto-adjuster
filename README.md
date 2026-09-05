@@ -30,7 +30,7 @@ How does it actually work?
 
 Part	What it does
 👀 The Eyes	Watches the video and identifies what's damaged — using an AI vision model, without needing to be told in advance what a "dent" or "scratch" looks like on your specific car.                         
-📄 The Reader	Reads your actual insurance policy and the car manufacturer's repair manual, and explains in plain English what's covered and how the damage should be fixed.
+📄 The Reader	Reads your actual insurance policy and the car manufacturer's repair manual, and explains in plain English what's covered and how the damage should be fixed.                                          
 🕵️ The Investigator	Looks at your claim history and the damage itself, and gives a fraud-risk score — deciding whether to approve instantly or send it to a person.
 What's actually built so far?
 
