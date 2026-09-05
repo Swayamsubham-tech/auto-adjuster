@@ -1,8 +1,8 @@
-Auto-Adjuster
+**Auto-Ajuster**
 
 An AI system that looks at a video of car damage and helps process the insurance claim automatically.
 
-What is this?
+**What is this?**
 
 Imagine you get into a small accident. Your bumper is dented, maybe a headlight is cracked. Normally, here's what happens next:
 
@@ -26,7 +26,7 @@ Consistency: the same damage and the same policy should get the same answer, eve
 Fraud: insurance fraud costs the industry over $40 billion a year in the US alone. A big chunk of that is preventable if damage and claim history are checked carefully and consistently.
 How does it actually work?
 
-The system has three "brains" working together:
+**The system has three "brains" working together**:
 
 Part	What it does
 👀 The Eyes	Watches the video and identifies what's damaged — using an AI vision model, without needing to be told in advance what a "dent" or "scratch" looks like on your specific car.
