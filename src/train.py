@@ -16,6 +16,7 @@ import sys
 sys.path.insert(0, os.path.dirname(__file__))
 from dataset import DamageCropDataset  # noqa: E402
 from model import build_damage_classifier, count_trainable_params  # noqa: E402
+from sampler_utils import build_weighted_sampler  # noqa: E402
 
 
 def train_one_epoch(model, loader, optimizer, loss_fn, device):
@@ -57,6 +58,9 @@ def main():
     parser.add_argument(
         "--freeze_backbone", type=lambda x: x.lower() == "true", default=True
     )
+    parser.add_argument(
+        "--use_weighted_sampler", type=lambda x: x.lower() == "true", default=True
+    )
     parser.add_argument("--out_dir", default="outputs/week2_training")
     args = parser.parse_args()
 
@@ -71,7 +75,11 @@ def main():
     print(f"Train: {len(train_ds)} images | Val: {len(val_ds)} images")
     print(f"Classes: {train_ds.class_to_idx}")
 
-    train_loader = DataLoader(train_ds, batch_size=args.batch_size, shuffle=True)
+    if args.use_weighted_sampler:
+        sampler = build_weighted_sampler(train_ds)
+        train_loader = DataLoader(train_ds, batch_size=args.batch_size, sampler=sampler)
+    else:
+        train_loader = DataLoader(train_ds, batch_size=args.batch_size, shuffle=True)
     val_loader = DataLoader(val_ds, batch_size=args.batch_size, shuffle=False)
 
     model = build_damage_classifier(
