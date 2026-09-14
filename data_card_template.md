@@ -33,3 +33,10 @@
 - Train on all 7 classes; expect flat_tire and dislocation (smallest classes) to be the hardest to get good recall on given limited examples — flag this specifically in Day 7's evaluation/error analysis rather than being surprised by it.
 - Use the weighted sampler (`--use_weighted_sampler True`, already the default) to counter the 11.4x imbalance.
 - Do NOT attempt part-level classification this pass — explicitly deferred, as documented.
+
+## Week 2 Training Results (Day 7 Evaluation)
+
+- **Test accuracy: 77.3%** (best checkpoint, epoch 15, frozen backbone)
+- **Weighted sampler confirmed effective:** dislocation (45 total examples) achieved 83.3% recall; flat_tire achieved 97.0% recall — rare classes are being learned, not ignored.
+- **Known weakness: dent vs. crack confusion.** Dent has the lowest recall (65.3%) among common classes; top misclassifications show dents being confidently mispredicted as crack, scratch, and shattered_glass. Worth investigating with more targeted augmentation or additional dent examples in a future iteration.
+- **Precision/recall tradeoff on rare classes:** dislocation's precision is only 0.500 (frequent false positives) despite strong recall — expected cost of aggressive oversampling, not a bug.
