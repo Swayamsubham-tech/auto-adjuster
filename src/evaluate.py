@@ -14,8 +14,8 @@ from sklearn.metrics import confusion_matrix, precision_recall_fscore_support
 import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
-from dataset import DamageCropDataset
-from model import build_damage_classifier
+from dataset import DamageCropDataset  # noqa: E402
+from model import build_damage_classifier  # noqa: E402
 
 
 @torch.no_grad()
@@ -139,7 +139,7 @@ def main():
     print("Top 10 highest-confidence mistakes (most concerning, review these first):")
     for e in errors[:10]:
         print(
-            f"  true={e['true']:15s} predicted={e['predicted']:15s} confidence={e['confidence']:.3f}"
+            f"  true={e['true']} predicted={e['predicted']} confidence={e['confidence']:.3f}"
         )
 
     report_path = os.path.join(args.out_dir, "eval_report.json")
