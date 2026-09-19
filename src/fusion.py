@@ -1,6 +1,7 @@
 """
 Week 3, Day 1 — Cross-frame fusion.
 """
+
 import argparse
 import json
 from collections import defaultdict
@@ -45,9 +46,14 @@ def suppress_within_frame_duplicates(detections, iou_threshold=0.7):
             for j in range(i + 1, len(frame_dets)):
                 if suppressed[j]:
                     continue
-                same_class = (frame_dets[i]["part"] == frame_dets[j]["part"]
-                              and frame_dets[i]["damage_type"] == frame_dets[j]["damage_type"])
-                is_overlap = iou_2d(frame_dets[i]["bbox"], frame_dets[j]["bbox"]) >= iou_threshold
+                same_class = (
+                    frame_dets[i]["part"] == frame_dets[j]["part"]
+                    and frame_dets[i]["damage_type"] == frame_dets[j]["damage_type"]
+                )
+                is_overlap = (
+                    iou_2d(frame_dets[i]["bbox"], frame_dets[j]["bbox"])
+                    >= iou_threshold
+                )
                 if same_class and is_overlap:
                     suppressed[j] = True
     return kept
@@ -85,14 +91,19 @@ def fuse_across_frames(detections, frame_window=3):
             confidences = [d["confidence"] for d in cluster]
             areas = [d.get("estimated_surface_area_cm2", 0) for d in cluster]
 
-            fused_findings.append({
-                "finding_id": f"f{finding_counter}",
-                "part": part, "damage_type": damage_type,
-                "confidence": max(confidences),
-                "num_frames_observed": len(cluster),
-                "frames_observed": [d["frame_id"] for d in cluster],
-                "estimated_surface_area_cm2": sum(areas) / len(areas) if areas else None,
-            })
+            fused_findings.append(
+                {
+                    "finding_id": f"f{finding_counter}",
+                    "part": part,
+                    "damage_type": damage_type,
+                    "confidence": max(confidences),
+                    "num_frames_observed": len(cluster),
+                    "frames_observed": [d["frame_id"] for d in cluster],
+                    "estimated_surface_area_cm2": (
+                        sum(areas) / len(areas) if areas else None
+                    ),
+                }
+            )
 
     return fused_findings
 
@@ -116,11 +127,14 @@ def main():
     fused = run_fusion_pipeline(raw_detections, args.iou_threshold, args.frame_window)
 
     import os
+
     os.makedirs(os.path.dirname(args.out_json) or ".", exist_ok=True)
     with open(args.out_json, "w") as f:
         json.dump(fused, f, indent=2)
 
-    print(f"Fused {len(raw_detections)} raw detections into {len(fused)} unique findings.")
+    print(
+        f"Fused {len(raw_detections)} raw detections into {len(fused)} unique findings."
+    )
     print(f"Saved: {args.out_json}")
 
 
