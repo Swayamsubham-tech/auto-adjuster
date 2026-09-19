@@ -47,8 +47,6 @@ def suppress_within_frame_duplicates(detections, iou_threshold=0.7):
                     continue
                 same_class = (frame_dets[i]["part"] == frame_dets[j]["part"]
                               and frame_dets[i]["damage_type"] == frame_dets[j]["damage_type"])
-                
-                # Split the long line to satisfy flake8 line length limits
                 is_overlap = iou_2d(frame_dets[i]["bbox"], frame_dets[j]["bbox"]) >= iou_threshold
                 if same_class and is_overlap:
                     suppressed[j] = True
