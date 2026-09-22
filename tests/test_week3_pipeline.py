@@ -10,6 +10,27 @@ from unittest.mock import MagicMock, patch
 
 from PIL import Image
 
+# --- AGGRESSIVE MOCKING FOR CI ---
+# Prevent CI runner from crashing when it encounters heavy ML imports in our source files.
+_mock_modules = [
+    "torch",
+    "torch.nn",
+    "torch.nn.functional",
+    "torch.utils",
+    "torch.utils.data",
+    "torch.optim",
+    "torchvision",
+    "torchvision.transforms",
+    "torchvision.models",
+    "matplotlib",
+    "matplotlib.pyplot",
+    "cv2",
+    "segment_anything",
+]
+for _mod in _mock_modules:
+    if _mod not in sys.modules:
+        sys.modules[_mod] = MagicMock()
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 from confidence import apply_confidence_thresholds  # noqa: E402
@@ -103,18 +124,6 @@ def test_full_damage_json_schema_shape():
 
 def test_mocked_full_pipeline_wiring():
     """Replaces SAM, the classifier, and frame extraction with fakes."""
-
-    # Mock heavy dependencies so CI doesn't crash on imports
-    if "torch" not in sys.modules:
-        sys.modules["torch"] = MagicMock()
-    if "torchvision" not in sys.modules:
-        sys.modules["torchvision"] = MagicMock()
-        sys.modules["torchvision.transforms"] = MagicMock()
-        sys.modules["torchvision.models"] = MagicMock()
-    if "matplotlib" not in sys.modules:
-        sys.modules["matplotlib"] = MagicMock()
-        sys.modules["matplotlib.pyplot"] = MagicMock()
-
     from pipeline import run_full_cv_pipeline
 
     with tempfile.TemporaryDirectory() as tmp:
