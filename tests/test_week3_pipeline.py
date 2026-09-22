@@ -104,13 +104,16 @@ def test_full_damage_json_schema_shape():
 def test_mocked_full_pipeline_wiring():
     """Replaces SAM, the classifier, and frame extraction with fakes."""
 
-    # Mock heavy ML dependencies so CI doesn't crash on 'import torch'
+    # Mock heavy dependencies so CI doesn't crash on imports
     if "torch" not in sys.modules:
         sys.modules["torch"] = MagicMock()
     if "torchvision" not in sys.modules:
         sys.modules["torchvision"] = MagicMock()
         sys.modules["torchvision.transforms"] = MagicMock()
         sys.modules["torchvision.models"] = MagicMock()
+    if "matplotlib" not in sys.modules:
+        sys.modules["matplotlib"] = MagicMock()
+        sys.modules["matplotlib.pyplot"] = MagicMock()
 
     from pipeline import run_full_cv_pipeline
 
