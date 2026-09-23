@@ -2,6 +2,7 @@
 Week 4, Day 1 — Text Chunking and Embedding (Cloud API Bypass).
 Bypasses Windows security blocks by offloading AI execution to a public API.
 """
+
 import json
 import os
 import urllib.request
@@ -37,7 +38,7 @@ def process_policy_document(filepath):
     chunks = []
     i = 0
     while i < len(words):
-        chunk_words = words[i:i + 60]
+        chunk_words = words[i : i + 60]
         chunks.append(" ".join(chunk_words))
         i += 50
 
@@ -60,7 +61,9 @@ def get_cloud_embedding(text):
             result = json.loads(response.read().decode("utf-8"))
             return result[0]
     except Exception as e:
-        print(f"Cloud API unavailable ({e}). Generating fallback deterministic vector...")
+        print(
+            f"Cloud API unavailable ({e}). Generating fallback deterministic vector..."
+        )
         return [0.05] * 384
 
 
