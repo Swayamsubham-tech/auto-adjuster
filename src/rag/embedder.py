@@ -2,7 +2,6 @@
 Week 4, Day 1 — Text Chunking and Embedding (Cloud API Bypass).
 Bypasses Windows security blocks by offloading AI execution to a public API.
 """
-
 import json
 import os
 import urllib.request
@@ -18,7 +17,7 @@ def ensure_dummy_policy_exists(filepath):
                 "COVERAGE LEVEL: Comprehensive\n\n"
                 "SECTION 1: BUMPER COVERAGE\n"
                 "Dents and scratches on the front or rear bumper are fully "
-                "covered under comprehensive insurance, subject to a $500 deductible. "
+                "covered under comprehensive insurance, subject to a rupees 500 deductible. "
                 "Replacement of the bumper is covered if structural integrity is "
                 "compromised.\n\n"
                 "SECTION 2: LIGHTING EXCLUSIONS\n"
@@ -34,12 +33,11 @@ def process_policy_document(filepath):
     with open(filepath, "r", encoding="utf-8") as f:
         text = f.read()
 
-    # Split by words to approximate ~300 character chunks with overlap
     words = text.split()
     chunks = []
     i = 0
     while i < len(words):
-        chunk_words = words[i : i + 60]
+        chunk_words = words[i:i + 60]
         chunks.append(" ".join(chunk_words))
         i += 50
 
@@ -60,12 +58,9 @@ def get_cloud_embedding(text):
         req = urllib.request.Request(url, data=data, headers=headers)
         with urllib.request.urlopen(req) as response:
             result = json.loads(response.read().decode("utf-8"))
-            return result[0]  # Return the 384-dimensional vector
+            return result[0]
     except Exception as e:
-        print(
-            f"Cloud API unavailable ({e}). Generating fallback deterministic vector..."
-        )
-        # If free API is rate-limited, fallback to a dummy vector for testing
+        print(f"Cloud API unavailable ({e}). Generating fallback deterministic vector...")
         return [0.05] * 384
 
 
